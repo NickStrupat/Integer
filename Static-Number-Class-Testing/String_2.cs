@@ -1,12 +1,15 @@
-public sealed class String<TMinLength, TMaxLength>(String value) : IEquatable<String<TMinLength, TMaxLength>> where TMinLength : INatural where TMaxLength : INatural
+public sealed class String<TMinLength, TMaxLength> : IEquatable<String<TMinLength, TMaxLength>> where TMinLength : INatural where TMaxLength : INatural
 {
-	private readonly String value = value switch
+	private readonly String value;
+
+	public String(String value)
 	{
-		null => throw new ArgumentNullException(nameof(value)),
-		_ when (UInt64)value.Length < TMinLength.Value => throw new ArgumentOutOfRangeException(nameof(value)),
-		_ when (UInt64)value.Length > TMaxLength.Value => throw new ArgumentOutOfRangeException(nameof(value)),
-		_ => value
-	};
+		ArgumentOutOfRangeException.ThrowIfLessThan(TMaxLength.Value, TMinLength.Value, nameof(TMaxLength));
+		ArgumentNullException.ThrowIfNull(value);
+		ArgumentOutOfRangeException.ThrowIfLessThan((UInt64)value.Length, TMinLength.Value, nameof(value));
+		ArgumentOutOfRangeException.ThrowIfGreaterThan((UInt64)value.Length, TMaxLength.Value, nameof(value));
+		this.value = value;
+	}
 
 	public Boolean Equals(String<TMinLength, TMaxLength>? other) => other is not null && value == other.value;
 	public override Boolean Equals(Object? obj) => obj is String<TMinLength, TMaxLength> other && Equals(other);

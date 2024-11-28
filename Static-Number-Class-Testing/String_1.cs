@@ -1,11 +1,13 @@
-public sealed class String<TMinLength>(String value) : IEquatable<String<TMinLength>> where TMinLength : INatural
+public sealed class String<TMinLength> : IEquatable<String<TMinLength>> where TMinLength : INatural
 {
-	private readonly String value = value switch
+	private readonly String value;
+
+	public String(String value)
 	{
-		null => throw new ArgumentNullException(nameof(value)),
-		_ when (UInt64)value.Length < TMinLength.Value => throw new ArgumentOutOfRangeException(nameof(value)),
-		_ => value
-	};
+		ArgumentNullException.ThrowIfNull(value);
+		ArgumentOutOfRangeException.ThrowIfLessThan((UInt64)value.Length, TMinLength.Value, nameof(value));
+		this.value = value;
+	}
 
 	public Boolean Equals(String<TMinLength>? other) => other is not null && value == other.value;
 	public override Boolean Equals(Object? obj) => obj is String<TMinLength> other && Equals(other);
