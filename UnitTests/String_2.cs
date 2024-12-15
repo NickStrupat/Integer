@@ -19,8 +19,15 @@ public class String_2
 		[TestCase<_2, _1>]
 		public void WhenInstantiatedWithAMinLengthGreaterThanMaxLength_ShouldThrowArgumentOutOfRangeException<TMinLength, TMaxLength>() where TMinLength : INatural where TMaxLength : INatural
 		{
+			var (min, max) = (TMinLength.Value, TMaxLength.Value);
+
 			var action = () => new String<TMinLength, TMaxLength>("a");
-			action.Should().ThrowExactly<ArgumentOutOfRangeException>().WithParameterName("TMaxLength");
+
+			action.Should().ThrowExactly<StringLengthOutOfRangeException>()
+				.Where(x => x.Min == min)
+				.Where(x => x.Max == max)
+				.Where(x => x.Value == 1)
+				;
 		}
 		
 		[TestCase<_0, _0>]
@@ -40,8 +47,15 @@ public class String_2
 		[TestCase<_2, _2>]
 		public void WhenCalledWithEmptyStringArgument_ShouldThrowArgumentOutOfRangeException<TMinLength, TMaxLength>() where TMinLength : INatural where TMaxLength : INatural
 		{
+			var (min, max) = (TMinLength.Value, TMaxLength.Value);
+			
 			var action = () => new String<TMinLength, TMaxLength>(String.Empty);
-			action.Should().ThrowExactly<ArgumentOutOfRangeException>().WithParameterName("value");
+
+			action.Should().ThrowExactly<StringLengthOutOfRangeException>()
+				.Where(x => x.Min == min)
+				.Where(x => x.Max == max)
+				.Where(x => x.Value == 0)
+				;
 		}
 	}
 }

@@ -1,7 +1,9 @@
 public readonly struct UInt<TMax>(UInt64 value) : IInt<UInt64>
 where TMax : INatural
 {
-	public UInt64 Value { get; } = value <= TMax.Value ? value : throw new UIntOutOfRangeException(value, 0, TMax.Value);
+	public UInt64 Value { get; } = value > TMax.Value
+		? throw new UIntOutOfRangeException(value, 0, TMax.Value)
+		: value;
 	public override String ToString() => Value.ToString();
 	public static UInt64 Min { get; } = 0;
 	public static UInt64 Max { get; } = TMax.Value;

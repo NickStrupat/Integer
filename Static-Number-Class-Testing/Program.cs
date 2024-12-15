@@ -2,9 +2,10 @@
 using _100 = Natural<_1, _0, _0>;
 using _N42 = Integer<N4, _2>;
 using _42 = Integer<_4, _2>;
-using Big = Integer<N6, _2, _3, _2, _5, _6, _8, _0, _4, _0, _0, _6>;
+using N623_256_804_006 = Integer<N6,_2,_3, _2,_5,_6, _8,_0,_4, _0,_0,_6>;
+using _4_096 = (_4, _0,_9,_6);
 
-Console.WriteLine(Big.Value.ToString("N0"));
+Console.WriteLine($"{N623_256_804_006.Value:N0}");
 Console.WriteLine(_N42.Value);
 Console.WriteLine(_42.Value);
 Console.WriteLine(Natural<_1, _9, _8, _6>.Value);
